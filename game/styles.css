@@ -1,0 +1,32 @@
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+}
+
+#game-area {
+    width: 800px;
+    height: 400px;
+    background-color: #333;
+    position: relative;
+    overflow: hidden;
+}
+#player, .obstacle {
+    image-rendering: pixelated; /* Deixa a textura com aparência de pixel art */
+    border-radius: 0; /* Remove arredondamento */
+    box-shadow: 2px 2px 0px black; /* Dá um efeito de pixel */
+}
+
+
+
+.obstacle {
+    width: 30px;
+    height: 30px;
+    background-color: blue;
+    position: absolute;
+}
