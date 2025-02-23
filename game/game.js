@@ -128,3 +128,5 @@ setInterval(createObstacle, 1000);
 
 // Inicializa a posição do jogador
 updatePlayerPosition();
+
+

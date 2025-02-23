@@ -3,27 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Obstacle Game</title>
+    <title>Jogo de Desviar de Obstáculos</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="game.css" />
   </head>
+
   <body>
-    <div id="intro">
-      <h1>Obstacle Game</h1>
-      <button id="play-button" class="retro-button">Play</button>
+    <div id="game-area">
+      <div id="player">
+        <img src="./assets/avatar (1).png" alt="" />
+      </div>
     </div>
-    <script>
-      document
-        .getElementById("play-button")
-        .addEventListener("click", function () {
-          // Aqui você pode redirecionar para a página do jogo
-          window.location.href = "game.html";
-        });
-    </script>
+    <script src="game.js"></script>
   </body>
 </html>
