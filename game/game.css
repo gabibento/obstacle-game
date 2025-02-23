@@ -9,6 +9,28 @@ html {
   align-items: center;
   background-color: #000;
 }
+#lives-container {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+  display: flex;
+  gap: 10px; /* Espaço entre os corações */
+}
+
+.heart {
+  width: 40px;
+  height: 40px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+.heart {
+  background-image: url('./assets/heart.png'); 
+}
+
+.empty-heart {
+  background-image: url('./assets/empty-heart.png');
+}
 
 #game-area {
   width: 70vw;

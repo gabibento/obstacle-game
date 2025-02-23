@@ -6,7 +6,7 @@ const gameAreaHeight = gameArea.offsetHeight;
 
 let playerPosition = {
   x: gameAreaWidth / 2 - 15, // Centralizado
-  y: gameAreaHeight /2 - 15, // Posição no chão
+  y: gameAreaHeight / 2 - 15, // Posição no chão
 };
 
 const playerSpeed = 5;
@@ -51,33 +51,34 @@ const movePlayer = (event) => {
 
 // Função para criar obstáculos com imagens aleatórias
 const createObstacle = () => {
-    const obstacle = document.createElement("div");
-    obstacle.classList.add("obstacle");
-  
-    const obstacleImages = [
-      './assets/obstacle1.png', 
-      './assets/obstacle2.png', 
-      './assets/obstacle3.png',
-      './assets/obstacle4.png' 
-    ];
-  
-    const randomImage = obstacleImages[Math.floor(Math.random() * obstacleImages.length)];
-    
-    const img = document.createElement('img');
-    img.src = randomImage;
-    img.alt = 'Obstacle';
-    img.style.width = '100%';
-    img.style.height = '100%';
-    obstacle.appendChild(img);
-  
-    const xPosition = Math.random() * (gameAreaWidth - 30);
-  
-    obstacle.style.left = `${xPosition}px`;
-    obstacle.style.top = "0px"; 
-    gameArea.appendChild(obstacle);
-  
-    moveObstacle(obstacle);
-  };
+  const obstacle = document.createElement("div");
+  obstacle.classList.add("obstacle");
+
+  const obstacleImages = [
+    "./assets/obstacle1.png",
+    "./assets/obstacle2.png",
+    "./assets/obstacle3.png",
+    "./assets/obstacle4.png",
+  ];
+
+  const randomImage =
+    obstacleImages[Math.floor(Math.random() * obstacleImages.length)];
+
+  const img = document.createElement("img");
+  img.src = randomImage;
+  img.alt = "Obstacle";
+  img.style.width = "100%";
+  img.style.height = "100%";
+  obstacle.appendChild(img);
+
+  const xPosition = Math.random() * (gameAreaWidth - 30);
+
+  obstacle.style.left = `${xPosition}px`;
+  obstacle.style.top = "0px";
+  gameArea.appendChild(obstacle);
+
+  moveObstacle(obstacle);
+};
 
 const moveObstacle = (obstacle) => {
   let obstaclePosition = parseInt(obstacle.style.top);
@@ -93,8 +94,8 @@ const moveObstacle = (obstacle) => {
 
     if (checkCollision(obstacle)) {
       clearInterval(moveInternal);
-      alert("Game Over!");
-      resetGame();
+      loseLife();
+      removeObstacle(obstacle);
     }
   }, 20);
 };
@@ -112,21 +113,56 @@ const checkCollision = (obstacle) => {
 };
 
 const resetGame = () => {
-  playerPosition.x = gameAreaWidth / 2 - 15;
-  playerPosition.y = gameAreaHeight / 2 - 15;
-  updatePlayerPosition();
-
+  lives = 3;
   const obstacles = document.querySelectorAll(".obstacle");
   obstacles.forEach((obstacle) => gameArea.removeChild(obstacle));
+
+  playerPosition.x = gameAreaWidth / 2 - 15;
+  playerPosition.y = gameAreaHeight / 2 - 15;
+
+  updatePlayerPosition();
+  updateLives();
 };
 
-// Escutando as teclas pressionadas
+const removeObstacle = (obstacle) => {
+  gameArea.removeChild(obstacle);
+};
+
+const livesContainer = document.getElementById("lives-container");
+let lives = 3;
+const totalLives = 3;
+
+// Função para exibir as vidas na tela
+const updateLives = () => {
+  livesContainer.innerHTML = "";
+  for (let i = 0; i < totalLives; i++) {
+    let heart = document.createElement("div");
+
+    heart.classList.add("heart");
+
+    if (i < lives) {
+      heart.classList.add("heart");
+    } else {
+      heart.classList.add("empty-heart");
+    }
+
+    livesContainer.appendChild(heart);
+  }
+};
+
+const loseLife = () => {
+  if (lives >= 0) {
+    lives--;
+    updateLives();
+  }
+  if (lives == 0) {
+    alert("Game Over!");
+    resetGame();
+  }
+};
+
 window.addEventListener("keydown", movePlayer);
 
-// Função que cria um obstáculo a cada 2 segundos
 setInterval(createObstacle, 1000);
-
-// Inicializa a posição do jogador
 updatePlayerPosition();
-
-
+updateLives();
