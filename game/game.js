@@ -5,12 +5,17 @@ const gameAreaWidth = gameArea.offsetWidth;
 const gameAreaHeight = gameArea.offsetHeight;
 
 let playerPosition = {
-  x: gameAreaWidth / 2 - 15, // Centralizado
-  y: gameAreaHeight / 2 - 15, // Posição no chão
+  x: 35,
+  y: gameAreaHeight / 2 - 15,
 };
 
-const playerSpeed = 5;
-const obstacleSpeed = 3;
+let playerSpeed = 5;
+
+const defaultObstacleSpeed = 3;
+let obstacleSpeed = defaultObstacleSpeed;
+
+const totalLives = 3;
+let lives = totalLives;
 
 // Função para atualizar a posição do jogador
 const updatePlayerPosition = () => {
@@ -47,6 +52,7 @@ const movePlayer = (event) => {
       break;
   }
   updatePlayerPosition();
+  checkGoalReached();
 };
 
 // Função para criar obstáculos com imagens aleatórias
@@ -95,7 +101,7 @@ const moveObstacle = (obstacle) => {
     if (checkCollision(obstacle)) {
       clearInterval(moveInternal);
       loseLife();
-      removeObstacle(obstacle);
+      gameArea.removeChild(obstacle);
     }
   }, 20);
 };
@@ -112,25 +118,22 @@ const checkCollision = (obstacle) => {
   );
 };
 
+let obstacleIntervals = [];
+
 const resetGame = () => {
   lives = 3;
   const obstacles = document.querySelectorAll(".obstacle");
   obstacles.forEach((obstacle) => gameArea.removeChild(obstacle));
 
-  playerPosition.x = gameAreaWidth / 2 - 15;
+  playerPosition.x = 35;
   playerPosition.y = gameAreaHeight / 2 - 15;
 
   updatePlayerPosition();
   updateLives();
-};
 
-const removeObstacle = (obstacle) => {
-  gameArea.removeChild(obstacle);
 };
 
 const livesContainer = document.getElementById("lives-container");
-let lives = 3;
-const totalLives = 3;
 
 // Função para exibir as vidas na tela
 const updateLives = () => {
@@ -156,10 +159,58 @@ const loseLife = () => {
     updateLives();
   }
   if (lives == 0) {
-    alert("Game Over!");
-    resetGame();
+    gameOver();
+  }
+}
+
+const gameOver = () => {
+  level = 1;
+  resetGame();
+  document.querySelector("#level-display").innerText = `Level ${level}`;
+  obstacleSpeed = defaultObstacleSpeed;
+  
+  obstacleIntervals.forEach((interval) => clearInterval(interval));
+  obstacleIntervals = [];
+};
+
+const goal = document.getElementById("goal");
+
+const checkGoalReached = () => {
+  const playerRect = player.getBoundingClientRect();
+  const goalRect = goal.getBoundingClientRect();
+
+  if (
+    playerRect.bottom > goalRect.top &&
+    playerRect.top < goalRect.bottom &&
+    playerRect.right > goalRect.left &&
+    playerRect.left < goalRect.right
+  ) {
+    levelUp();
   }
 };
+let level = 1;
+
+const levelUp = () => {
+  level++;
+  console.log(level);
+  document.querySelector("#level-display").innerText = `Level ${level}`;
+
+  resetGame();
+
+  let obstacleInterval = Math.max(2000 - level * 100, 500);
+
+  if (level % 2 === 0 && obstacleSpeed < 10) {
+    obstacleSpeed += 1;
+  } else{
+    const newInterval = setInterval(createObstacle, obstacleInterval);
+    obstacleIntervals.push(newInterval);
+
+    if(level < 6){
+      obstacleSpeed = defaultObstacleSpeed;
+    }
+  }
+  
+}
 
 window.addEventListener("keydown", movePlayer);
 
