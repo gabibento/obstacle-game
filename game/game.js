@@ -49,21 +49,35 @@ const movePlayer = (event) => {
   updatePlayerPosition();
 };
 
-// Função para criar obstáculos
+// Função para criar obstáculos com imagens aleatórias
 const createObstacle = () => {
-  const obstacle = document.createElement("div");
-  obstacle.classList.add("obstacle");
-
-  // Posição aleatória horizontal
-  const xPosition = Math.random() * (gameAreaWidth - 30);
-
-  obstacle.style.left = `${xPosition}px`;
-  obstacle.style.top = "0px"; // Começa no topo da tela
-  gameArea.appendChild(obstacle);
-
-  // Movimentação do obstáculo
-  moveObstacle(obstacle);
-};
+    const obstacle = document.createElement("div");
+    obstacle.classList.add("obstacle");
+  
+    const obstacleImages = [
+      './assets/obstacle1.png', 
+      './assets/obstacle2.png', 
+      './assets/obstacle3.png',
+      './assets/obstacle4.png' 
+    ];
+  
+    const randomImage = obstacleImages[Math.floor(Math.random() * obstacleImages.length)];
+    
+    const img = document.createElement('img');
+    img.src = randomImage;
+    img.alt = 'Obstacle';
+    img.style.width = '100%';
+    img.style.height = '100%';
+    obstacle.appendChild(img);
+  
+    const xPosition = Math.random() * (gameAreaWidth - 30);
+  
+    obstacle.style.left = `${xPosition}px`;
+    obstacle.style.top = "0px"; 
+    gameArea.appendChild(obstacle);
+  
+    moveObstacle(obstacle);
+  };
 
 const moveObstacle = (obstacle) => {
   let obstaclePosition = parseInt(obstacle.style.top);

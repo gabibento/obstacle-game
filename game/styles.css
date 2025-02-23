@@ -1,4 +1,3 @@
-
 body, html {
     margin: 0;
     padding: 0;
@@ -6,27 +5,36 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f0f0f0;
+    background-color: #000;
 }
 
 #game-area {
-    width: 800px;
-    height: 400px;
-    background-color: #333;
+    width: 70vw;
+    height: 70vh;
+    background-image: url('./assets/depositphotos_575075004-stock-illustration-grass-texture-pixel-art-vector.jpg');
+    background-size: contain;  
+    background-repeat: repeat; 
     position: relative;
     overflow: hidden;
-}
-#player, .obstacle {
-    image-rendering: pixelated; /* Deixa a textura com aparência de pixel art */
-    border-radius: 0; /* Remove arredondamento */
-    box-shadow: 2px 2px 0px black; /* Dá um efeito de pixel */
+    image-rendering: pixelated;
 }
 
+#player {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
-
+#player img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 .obstacle {
-    width: 30px;
-    height: 30px;
-    background-color: blue;
+    width: 60px;
+    height: 60px;
     position: absolute;
 }
