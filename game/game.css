@@ -1,6 +1,7 @@
 body,
 html {
   font-family: "Press Start 2P", serif;
+  letter-spacing: 1.5px;
   margin: 0;
   padding: 0;
   height: 100%;
@@ -44,13 +45,14 @@ html {
 }
 
 #player {
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 110px;
   position: absolute;
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
+  filter: drop-shadow(0 5px 0px rgba(0, 0, 0, 0.336));
 }
 
 #player img {
@@ -62,14 +64,16 @@ html {
   width: 60px;
   height: 60px;
   position: absolute;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6)); 
 }
 #goal {
   width: 160px;
   height: 200px;
   position: absolute;
-  bottom: -5vh;
+  bottom: -7vh;
   right: -2vw;
   z-index: 1;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6)); 
 }
 
 #goal img {
@@ -78,10 +82,55 @@ html {
 }
 
 #level-display {
+  font-size: 30px; 
+  text-shadow: 3px 3px 0px black, -2px -2px 0px black; 
   position: absolute;
   top: 10px;
   left: 10px;
   color: white;
-  font-size: 20px;
   font-family: 'Press Start 2P', cursive; 
 }
+
+#game-over-screen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 50px;
+  text-align: center;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 100;
+}
+#game-over-screen.hidden {
+  display: none;
+}
+
+#game-over-screen h2{
+  font-size: 30px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+#game-over-screen #buttons{
+  display: flex;
+  justify-content: space-between;
+}
+
+#game-over-screen button {
+  font-family: "Press Start 2P", serif;
+  padding: 20px;
+  background: #5964ff;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+#game-over-screen button:hover {
+  background: #5964ff98;
+}
+

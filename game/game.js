@@ -16,6 +16,7 @@ let obstacleSpeed = defaultObstacleSpeed;
 
 const totalLives = 3;
 let lives = totalLives;
+let isGameOver = false;
 
 // Função para atualizar a posição do jogador
 const updatePlayerPosition = () => {
@@ -25,6 +26,8 @@ const updatePlayerPosition = () => {
 
 // Função para mover o jogador com base nas teclas pressionadas
 const movePlayer = (event) => {
+  if(isGameOver) return;
+
   switch (event.key) {
     case "ArrowLeft":
     case "a":
@@ -57,6 +60,8 @@ const movePlayer = (event) => {
 
 // Função para criar obstáculos com imagens aleatórias
 const createObstacle = () => {
+  if(isGameOver) return;
+
   const obstacle = document.createElement("div");
   obstacle.classList.add("obstacle");
 
@@ -87,6 +92,8 @@ const createObstacle = () => {
 };
 
 const moveObstacle = (obstacle) => {
+  if(isGameOver) return;
+
   let obstaclePosition = parseInt(obstacle.style.top);
 
   const moveInternal = setInterval(() => {
@@ -109,19 +116,22 @@ const moveObstacle = (obstacle) => {
 const checkCollision = (obstacle) => {
   const obstacleRect = obstacle.getBoundingClientRect();
   const playerRect = player.getBoundingClientRect();
-
+  
   return !(
-    obstacleRect.bottom < playerRect.top ||
-    obstacleRect.top > playerRect.bottom ||
-    obstacleRect.right < playerRect.left ||
-    obstacleRect.left > playerRect.right
+    obstacleRect.bottom < playerRect.top + 10 ||
+    obstacleRect.top > playerRect.bottom - 10 ||
+    obstacleRect.right < playerRect.left + 10 ||
+    obstacleRect.left > playerRect.right - 10
   );
 };
 
 let obstacleIntervals = [];
 
 const resetGame = () => {
+  isGameOver = false;
+
   lives = 3;
+  obstacleSpeed = defaultObstacleSpeed;
   const obstacles = document.querySelectorAll(".obstacle");
   obstacles.forEach((obstacle) => gameArea.removeChild(obstacle));
 
@@ -164,13 +174,13 @@ const loseLife = () => {
 }
 
 const gameOver = () => {
-  level = 1;
-  resetGame();
-  document.querySelector("#level-display").innerText = `Level ${level}`;
-  obstacleSpeed = defaultObstacleSpeed;
-  
+  isGameOver = true;
+
   obstacleIntervals.forEach((interval) => clearInterval(interval));
   obstacleIntervals = [];
+  obstacleSpeed = 0
+
+  document.getElementById("game-over-screen").classList.remove("hidden");
 };
 
 const goal = document.getElementById("goal");
@@ -179,12 +189,11 @@ const checkGoalReached = () => {
   const playerRect = player.getBoundingClientRect();
   const goalRect = goal.getBoundingClientRect();
 
-  if (
-    playerRect.bottom > goalRect.top &&
-    playerRect.top < goalRect.bottom &&
-    playerRect.right > goalRect.left &&
-    playerRect.left < goalRect.right
-  ) {
+  const isPlayerOnGoalHorizontal = playerRect.left >= goalRect.left && playerRect.right <= goalRect.right;
+  
+  const isPlayerOnGoalVertical = playerRect.bottom <= goalRect.bottom && playerRect.top >= goalRect.top;
+
+  if (isPlayerOnGoalHorizontal && isPlayerOnGoalVertical) {
     levelUp();
   }
 };
@@ -213,6 +222,16 @@ const levelUp = () => {
 }
 
 window.addEventListener("keydown", movePlayer);
+
+document.getElementById("retry-button").addEventListener("click", () => {
+  document.getElementById("game-over-screen").classList.add("hidden");
+  resetGame();
+});
+
+document.getElementById("back-button").addEventListener("click", () => {
+  document.getElementById("game-over-screen").classList.add("hidden");
+  window.location.href = "index.html"
+});
 
 setInterval(createObstacle, 1000);
 updatePlayerPosition();
