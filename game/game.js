@@ -4,6 +4,11 @@ const gameArea = document.getElementById("game-area");
 const gameAreaWidth = gameArea.offsetWidth;
 const gameAreaHeight = gameArea.offsetHeight;
 
+const hitSound = new Audio('./assets/sounds/hit.mp3');
+const gameOverSound = new Audio('./assets/sounds/gameover.mp3');
+const levelupSound = new Audio('./assets/sounds/levelup.mp3');
+const selectSound = new Audio('./assets/sounds/select.mp3');
+
 let playerPosition = {
   x: 35,
   y: gameAreaHeight / 2 - 15,
@@ -168,6 +173,9 @@ const loseLife = () => {
     lives--;
     updateLives();
   }
+  if(lives > 0){
+    hitSound.play();
+  }
   if (lives == 0) {
     gameOver();
   }
@@ -175,6 +183,8 @@ const loseLife = () => {
 
 const gameOver = () => {
   isGameOver = true;
+
+  gameOverSound.play();
 
   obstacleIntervals.forEach((interval) => clearInterval(interval));
   obstacleIntervals = [];
@@ -201,7 +211,7 @@ let level = 1;
 
 const levelUp = () => {
   level++;
-  console.log(level);
+  levelupSound.play();
   document.querySelector("#level-display").innerText = `Level ${level}`;
 
   resetGame();
@@ -225,12 +235,18 @@ window.addEventListener("keydown", movePlayer);
 
 document.getElementById("retry-button").addEventListener("click", () => {
   document.getElementById("game-over-screen").classList.add("hidden");
+  selectSound.play();
   resetGame();
 });
 
 document.getElementById("back-button").addEventListener("click", () => {
   document.getElementById("game-over-screen").classList.add("hidden");
-  window.location.href = "index.html"
+  selectSound.play().then(() => {
+    window.location.href = "index.html";
+  }).catch((error) => {
+    console.error("Erro ao reproduzir o som:", error);
+     
+  });
 });
 
 setInterval(createObstacle, 1000);

@@ -18,12 +18,18 @@
       <button id="play-button" class="button">Play</button>
     </div>
     <script>
-      document
-        .getElementById("play-button")
-        .addEventListener("click", function () {
-          // Aqui você pode redirecionar para a página do jogo
-          window.location.href = "game.html";
-        });
+      const selectSound = new Audio("./assets/select.mp3");
+      document.getElementById("play-button").addEventListener("click", () => {
+        selectSound
+          .play()
+          .then(() => {
+            window.location.href = "game.html";
+          })
+          .catch((error) => {
+            console.error("Erro ao tentar reproduzir o som:", error);
+            window.location.href = "game.html";
+          });
+      });
     </script>
   </body>
 </html>
