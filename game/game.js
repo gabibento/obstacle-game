@@ -130,23 +130,7 @@ const checkCollision = (obstacle) => {
   );
 };
 
-let obstacleIntervals = [];
 
-const resetGame = () => {
-  isGameOver = false;
-
-  lives = 3;
-  obstacleSpeed = defaultObstacleSpeed;
-  const obstacles = document.querySelectorAll(".obstacle");
-  obstacles.forEach((obstacle) => gameArea.removeChild(obstacle));
-
-  playerPosition.x = 35;
-  playerPosition.y = gameAreaHeight / 2 - 15;
-
-  updatePlayerPosition();
-  updateLives();
-
-};
 
 const livesContainer = document.getElementById("lives-container");
 
@@ -181,17 +165,47 @@ const loseLife = () => {
   }
 }
 
-const gameOver = () => {
-  isGameOver = true;
+let obstacleIntervals = [];
 
-  gameOverSound.play();
+
+const resetUpdate = () => {
+  lives = 3;
+
+  playerPosition.x = 35;
+  playerPosition.y = gameAreaHeight / 2 - 15;
+
+  updatePlayerPosition();
+  updateLives();
+
+}
+const resetGame = () => {
+  isGameOver = false;
+  level = 1; 
+  document.querySelector("#level-display").innerText = `Level ${level}`;
+
+  resetUpdate();
+
+  obstacleSpeed = defaultObstacleSpeed;
 
   obstacleIntervals.forEach((interval) => clearInterval(interval));
   obstacleIntervals = [];
-  obstacleSpeed = 0
+  clearAllIntervals(); 
+
+  let obstacleInterval = setInterval(createObstacle, 1000);
+  obstacleIntervals.push(obstacleInterval);
+
+}
+
+const gameOver = () => {
+  isGameOver = true;
+  gameOverSound.play();
+  const obstacles = document.querySelectorAll(".obstacle");
+  obstacles.forEach((obstacle) => gameArea.removeChild(obstacle));
 
   document.getElementById("game-over-screen").classList.remove("hidden");
-};
+  
+}
+
 
 const goal = document.getElementById("goal");
 
@@ -210,13 +224,17 @@ const checkGoalReached = () => {
 let level = 1;
 
 const levelUp = () => {
+  isGameOver = false;
   level++;
   levelupSound.play();
   document.querySelector("#level-display").innerText = `Level ${level}`;
 
-  resetGame();
+  resetUpdate();
 
   let obstacleInterval = Math.max(2000 - level * 100, 500);
+
+  obstacleIntervals.forEach((interval) => clearInterval(interval));
+  obstacleIntervals = [];
 
   if (level % 2 === 0 && obstacleSpeed < 10) {
     obstacleSpeed += 1;
