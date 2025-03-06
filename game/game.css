@@ -91,7 +91,7 @@ html {
   font-family: 'Press Start 2P', cursive; 
 }
 
-#game-over-screen {
+#game-over-screen, #game-completed {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -101,26 +101,25 @@ html {
   padding: 50px;
   text-align: center;
   border-radius: 10px;
-  display: flex;
-  flex-direction: column;
+  
   gap: 10px;
   z-index: 100;
 }
-#game-over-screen.hidden {
+.hidden {
   display: none;
 }
 
-#game-over-screen h2{
+#game-over-screen h2, #game-completed h2{
   font-size: 30px;
   font-weight: bold;
   text-transform: uppercase;
 }
-#game-over-screen #buttons{
+.buttons{
   display: flex;
   justify-content: space-between;
 }
 
-#game-over-screen button {
+.buttons button {
   font-family: "Press Start 2P", serif;
   padding: 20px;
   background: #5964ff;
@@ -130,7 +129,7 @@ html {
   border-radius: 5px;
 }
 
-#game-over-screen button:hover {
+.buttons button:hover {
   background: #5964ff98;
 }
 

@@ -187,8 +187,6 @@ const resetGame = () => {
 
   obstacleSpeed = defaultObstacleSpeed;
 
-  obstacleIntervals.forEach((interval) => clearInterval(interval));
-  obstacleIntervals = [];
   clearAllIntervals(); 
 
   let obstacleInterval = setInterval(createObstacle, 1000);
@@ -202,7 +200,7 @@ const gameOver = () => {
   const obstacles = document.querySelectorAll(".obstacle");
   obstacles.forEach((obstacle) => gameArea.removeChild(obstacle));
 
-  document.getElementById("game-over-screen").classList.remove("hidden");
+  document.querySelector("#game-over-screen").classList.remove("hidden");
   
 }
 
@@ -246,19 +244,26 @@ const levelUp = () => {
       obstacleSpeed = defaultObstacleSpeed;
     }
   }
+  if(level == 10){
+    document.querySelector("#game-completed").classList.remove("hidden");
+  }
   
 }
 
 window.addEventListener("keydown", movePlayer);
 
-document.getElementById("retry-button").addEventListener("click", () => {
-  document.getElementById("game-over-screen").classList.add("hidden");
+document.querySelector("#retry-button").addEventListener("click", () => {
+  console.log("aa")
+  document.querySelector("#game-over-screen").classList.add("hidden");
+  document.querySelector("#game-completed").classList.add("hidden");
   selectSound.play();
   resetGame();
 });
 
-document.getElementById("back-button").addEventListener("click", () => {
-  document.getElementById("game-over-screen").classList.add("hidden");
+document.querySelector("#back-button").addEventListener("click", () => {
+  console.log("aa")
+  document.querySelector("#game-over-screen").classList.add("hidden");
+  document.querySelector("#game-completed").classList.add("hidden");
   selectSound.play().then(() => {
     window.location.href = "index.html";
   }).catch((error) => {
@@ -266,7 +271,9 @@ document.getElementById("back-button").addEventListener("click", () => {
      
   });
 });
-
+ 
 setInterval(createObstacle, 1000);
 updatePlayerPosition();
 updateLives();
+
+
