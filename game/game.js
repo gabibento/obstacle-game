@@ -14,7 +14,7 @@ let playerPosition = {
   y: gameAreaHeight / 2 - 15,
 };
 
-let playerSpeed = 15;
+let playerSpeed = 5;
 
 const defaultObstacleSpeed = 3;
 let obstacleSpeed = defaultObstacleSpeed;
@@ -63,7 +63,7 @@ const movePlayer = (event) => {
   checkGoalReached();
 };
 
-// Função para criar obstáculos com imagens aleatórias
+// Função para criar obstáculos aleatoriamente
 const createObstacle = () => {
   if (isGameOver) return;
 
@@ -95,7 +95,7 @@ const createObstacle = () => {
 
   moveObstacle(obstacle);
 };
-
+// Função para mover os obstáculos para baixo
 const moveObstacle = (obstacle) => {
   if (isGameOver) return;
 
@@ -105,13 +105,14 @@ const moveObstacle = (obstacle) => {
     obstaclePosition += obstacleSpeed;
     obstacle.style.top = `${obstaclePosition}px`;
 
+    // Verifica se está nos limites de altura da área do jogo e remove caso não esteja
     if (obstaclePosition > gameAreaHeight) {
       clearInterval(moveInternal);
       if (gameArea.contains(obstacle)) {
         gameArea.removeChild(obstacle);
       }
     }
-
+    // Se tiver colisão remove o obstáculo e perde vida
     if (checkCollision(obstacle)) {
       clearInterval(moveInternal);
       loseLife();
@@ -122,6 +123,7 @@ const moveObstacle = (obstacle) => {
   }, 20);
 };
 
+// Função para checar se houve colisão comparando as posições
 const checkCollision = (obstacle) => {
   const obstacleRect = obstacle.getBoundingClientRect();
   const playerRect = player.getBoundingClientRect();
@@ -153,7 +155,7 @@ const updateLives = () => {
     livesContainer.appendChild(heart);
   }
 };
-
+// Função para remover vida
 const loseLife = () => {
   if (lives >= 0) {
     lives--;
@@ -168,7 +170,7 @@ const loseLife = () => {
 };
 
 let obstacleIntervals = [];
-
+// Função para resetar vidas e posição do jogador
 const resetUpdate = () => {
   lives = 3;
 
@@ -178,6 +180,7 @@ const resetUpdate = () => {
   updatePlayerPosition();
   updateLives();
 };
+// Função para resetar jogo
 const resetGame = () => {
   isGameOver = false;
   level = 1;
@@ -191,7 +194,7 @@ const resetGame = () => {
 
   clearAllIntervals();
 };
-
+// Função de game over
 const gameOver = () => {
   isGameOver = true;
   gameOverSound.play();
@@ -202,7 +205,7 @@ const gameOver = () => {
 };
 
 const goal = document.getElementById("goal");
-
+// Função para verificar se o jogador está na mesma posição que o alvo
 const checkGoalReached = () => {
   const playerRect = player.getBoundingClientRect();
   const goalRect = goal.getBoundingClientRect();
@@ -219,19 +222,21 @@ const checkGoalReached = () => {
 };
 let level = 1;
 
+// Função para aumentar o nível
 const levelUp = () => {
   level++;
   levelupSound.play();
-  if (level != 11)
+  if (level != 11){
     document.querySelector("#level-display").innerText = `Level ${level}`;
-
-  resetUpdate();
+    resetUpdate();
+  }
 
   let obstacleInterval = Math.max(2000 - level * 100, 500);
 
   obstacleIntervals.forEach((interval) => clearInterval(interval));
   obstacleIntervals = [];
 
+  // Lógica de aumento de dificuldade
   if (level % 2 === 0 && obstacleSpeed < 10) {
     obstacleSpeed += 1;
   } else {
@@ -256,6 +261,8 @@ const levelUp = () => {
   }
 };
 
+// Eventos
+
 window.addEventListener("keydown", movePlayer);
 
 document.querySelector("#play-again-button").addEventListener("click", () => {
@@ -265,7 +272,6 @@ document.querySelector("#play-again-button").addEventListener("click", () => {
 });
 
 document.querySelector("#retry-button").addEventListener("click", () => {
-  console.log("aa");
   document.querySelector("#game-over-screen").classList.add("hidden");
   selectSound.play();
   resetGame();
