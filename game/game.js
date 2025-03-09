@@ -14,7 +14,7 @@ let playerPosition = {
   y: gameAreaHeight / 2 - 15,
 };
 
-let playerSpeed = 10;
+let playerSpeed = 15;
 
 const defaultObstacleSpeed = 3;
 let obstacleSpeed = defaultObstacleSpeed;
@@ -187,10 +187,9 @@ const resetGame = () => {
 
   obstacleSpeed = defaultObstacleSpeed;
 
-  clearAllIntervals();
+  obstacleIntervals.forEach((interval) => clearInterval(interval));
 
-  let obstacleInterval = setInterval(createObstacle, 1000);
-  obstacleIntervals.push(obstacleInterval);
+  clearAllIntervals();
 };
 
 const gameOver = () => {
@@ -223,7 +222,8 @@ let level = 1;
 const levelUp = () => {
   level++;
   levelupSound.play();
-  if(level != 11) document.querySelector("#level-display").innerText = `Level ${level}`;
+  if (level != 11)
+    document.querySelector("#level-display").innerText = `Level ${level}`;
 
   resetUpdate();
 
@@ -242,6 +242,11 @@ const levelUp = () => {
       obstacleSpeed = defaultObstacleSpeed;
     }
   }
+  if (level == 10) {
+    obstacleInterval = 350;
+    const newInterval = setInterval(createObstacle, obstacleInterval);
+    obstacleIntervals.push(newInterval);
+  }
   if (level == 11) {
     isGameOver = true;
     const obstacles = document.querySelectorAll(".obstacle");
@@ -252,7 +257,6 @@ const levelUp = () => {
 };
 
 window.addEventListener("keydown", movePlayer);
-
 
 document.querySelector("#play-again-button").addEventListener("click", () => {
   document.querySelector("#game-completed").classList.add("hidden");
@@ -267,17 +271,19 @@ document.querySelector("#retry-button").addEventListener("click", () => {
   resetGame();
 });
 
-document.querySelector("#back-gameover-button").addEventListener("click", () => {
-  document.querySelector("#game-over-screen").classList.add("hidden");
-  selectSound
-    .play()
-    .then(() => {
-      window.location.href = "index.html";
-    })
-    .catch((error) => {
-      console.error("Erro ao reproduzir o som:", error);
-    });
-});
+document
+  .querySelector("#back-gameover-button")
+  .addEventListener("click", () => {
+    document.querySelector("#game-over-screen").classList.add("hidden");
+    selectSound
+      .play()
+      .then(() => {
+        window.location.href = "index.html";
+      })
+      .catch((error) => {
+        console.error("Erro ao reproduzir o som:", error);
+      });
+  });
 
 document.querySelector("#back-button").addEventListener("click", () => {
   document.querySelector("#game-completed").classList.add("hidden");
