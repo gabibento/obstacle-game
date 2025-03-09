@@ -4,17 +4,17 @@ const gameArea = document.getElementById("game-area");
 const gameAreaWidth = gameArea.offsetWidth;
 const gameAreaHeight = gameArea.offsetHeight;
 
-const hitSound = new Audio('./assets/sounds/hit.mp3');
-const gameOverSound = new Audio('./assets/sounds/gameover.mp3');
-const levelupSound = new Audio('./assets/sounds/levelup.mp3');
-const selectSound = new Audio('./assets/sounds/select.mp3');
+const hitSound = new Audio("./assets/sounds/hit.mp3");
+const gameOverSound = new Audio("./assets/sounds/gameover.mp3");
+const levelupSound = new Audio("./assets/sounds/levelup.mp3");
+const selectSound = new Audio("./assets/sounds/select.mp3");
 
 let playerPosition = {
   x: 35,
   y: gameAreaHeight / 2 - 15,
 };
 
-let playerSpeed = 5;
+let playerSpeed = 10;
 
 const defaultObstacleSpeed = 3;
 let obstacleSpeed = defaultObstacleSpeed;
@@ -31,7 +31,7 @@ const updatePlayerPosition = () => {
 
 // Função para mover o jogador com base nas teclas pressionadas
 const movePlayer = (event) => {
-  if(isGameOver) return;
+  if (isGameOver) return;
 
   switch (event.key) {
     case "ArrowLeft":
@@ -65,7 +65,7 @@ const movePlayer = (event) => {
 
 // Função para criar obstáculos com imagens aleatórias
 const createObstacle = () => {
-  if(isGameOver) return;
+  if (isGameOver) return;
 
   const obstacle = document.createElement("div");
   obstacle.classList.add("obstacle");
@@ -97,7 +97,7 @@ const createObstacle = () => {
 };
 
 const moveObstacle = (obstacle) => {
-  if(isGameOver) return;
+  if (isGameOver) return;
 
   let obstaclePosition = parseInt(obstacle.style.top);
 
@@ -107,13 +107,17 @@ const moveObstacle = (obstacle) => {
 
     if (obstaclePosition > gameAreaHeight) {
       clearInterval(moveInternal);
-      gameArea.removeChild(obstacle);
+      if (gameArea.contains(obstacle)) {
+        gameArea.removeChild(obstacle);
+      }
     }
 
     if (checkCollision(obstacle)) {
       clearInterval(moveInternal);
       loseLife();
-      gameArea.removeChild(obstacle);
+      if (gameArea.contains(obstacle)) {
+        gameArea.removeChild(obstacle);
+      }
     }
   }, 20);
 };
@@ -121,7 +125,7 @@ const moveObstacle = (obstacle) => {
 const checkCollision = (obstacle) => {
   const obstacleRect = obstacle.getBoundingClientRect();
   const playerRect = player.getBoundingClientRect();
-  
+
   return !(
     obstacleRect.bottom < playerRect.top + 10 ||
     obstacleRect.top > playerRect.bottom - 10 ||
@@ -129,8 +133,6 @@ const checkCollision = (obstacle) => {
     obstacleRect.left > playerRect.right - 10
   );
 };
-
-
 
 const livesContainer = document.getElementById("lives-container");
 
@@ -145,7 +147,7 @@ const updateLives = () => {
     if (i < lives) {
       heart.classList.add("heart");
     } else {
-      heart.classList.add("empty-heart");
+      heart.classList.remove("heart");
     }
 
     livesContainer.appendChild(heart);
@@ -157,16 +159,15 @@ const loseLife = () => {
     lives--;
     updateLives();
   }
-  if(lives > 0){
+  if (lives > 0) {
     hitSound.play();
   }
   if (lives == 0) {
     gameOver();
   }
-}
+};
 
 let obstacleIntervals = [];
-
 
 const resetUpdate = () => {
   lives = 3;
@@ -176,23 +177,21 @@ const resetUpdate = () => {
 
   updatePlayerPosition();
   updateLives();
-
-}
+};
 const resetGame = () => {
   isGameOver = false;
-  level = 1; 
+  level = 1;
   document.querySelector("#level-display").innerText = `Level ${level}`;
 
   resetUpdate();
 
   obstacleSpeed = defaultObstacleSpeed;
 
-  clearAllIntervals(); 
+  clearAllIntervals();
 
   let obstacleInterval = setInterval(createObstacle, 1000);
   obstacleIntervals.push(obstacleInterval);
-
-}
+};
 
 const gameOver = () => {
   isGameOver = true;
@@ -201,9 +200,7 @@ const gameOver = () => {
   obstacles.forEach((obstacle) => gameArea.removeChild(obstacle));
 
   document.querySelector("#game-over-screen").classList.remove("hidden");
-  
-}
-
+};
 
 const goal = document.getElementById("goal");
 
@@ -211,9 +208,11 @@ const checkGoalReached = () => {
   const playerRect = player.getBoundingClientRect();
   const goalRect = goal.getBoundingClientRect();
 
-  const isPlayerOnGoalHorizontal = playerRect.left >= goalRect.left && playerRect.right <= goalRect.right;
-  
-  const isPlayerOnGoalVertical = playerRect.bottom <= goalRect.bottom && playerRect.top >= goalRect.top;
+  const isPlayerOnGoalHorizontal =
+    playerRect.left >= goalRect.left && playerRect.right <= goalRect.right;
+
+  const isPlayerOnGoalVertical =
+    playerRect.bottom <= goalRect.bottom && playerRect.top >= goalRect.top;
 
   if (isPlayerOnGoalHorizontal && isPlayerOnGoalVertical) {
     levelUp();
@@ -222,10 +221,9 @@ const checkGoalReached = () => {
 let level = 1;
 
 const levelUp = () => {
-  isGameOver = false;
   level++;
   levelupSound.play();
-  document.querySelector("#level-display").innerText = `Level ${level}`;
+  if(level != 11) document.querySelector("#level-display").innerText = `Level ${level}`;
 
   resetUpdate();
 
@@ -236,44 +234,63 @@ const levelUp = () => {
 
   if (level % 2 === 0 && obstacleSpeed < 10) {
     obstacleSpeed += 1;
-  } else{
+  } else {
     const newInterval = setInterval(createObstacle, obstacleInterval);
     obstacleIntervals.push(newInterval);
 
-    if(level < 6){
+    if (level < 6) {
       obstacleSpeed = defaultObstacleSpeed;
     }
   }
-  if(level == 10){
+  if (level == 11) {
+    isGameOver = true;
+    const obstacles = document.querySelectorAll(".obstacle");
+    obstacles.forEach((obstacle) => gameArea.removeChild(obstacle));
+
     document.querySelector("#game-completed").classList.remove("hidden");
   }
-  
-}
+};
 
 window.addEventListener("keydown", movePlayer);
 
-document.querySelector("#retry-button").addEventListener("click", () => {
-  console.log("aa")
-  document.querySelector("#game-over-screen").classList.add("hidden");
+
+document.querySelector("#play-again-button").addEventListener("click", () => {
   document.querySelector("#game-completed").classList.add("hidden");
   selectSound.play();
   resetGame();
 });
 
-document.querySelector("#back-button").addEventListener("click", () => {
-  console.log("aa")
+document.querySelector("#retry-button").addEventListener("click", () => {
+  console.log("aa");
   document.querySelector("#game-over-screen").classList.add("hidden");
-  document.querySelector("#game-completed").classList.add("hidden");
-  selectSound.play().then(() => {
-    window.location.href = "index.html";
-  }).catch((error) => {
-    console.error("Erro ao reproduzir o som:", error);
-     
-  });
+  selectSound.play();
+  resetGame();
 });
- 
+
+document.querySelector("#back-gameover-button").addEventListener("click", () => {
+  document.querySelector("#game-over-screen").classList.add("hidden");
+  selectSound
+    .play()
+    .then(() => {
+      window.location.href = "index.html";
+    })
+    .catch((error) => {
+      console.error("Erro ao reproduzir o som:", error);
+    });
+});
+
+document.querySelector("#back-button").addEventListener("click", () => {
+  document.querySelector("#game-completed").classList.add("hidden");
+  selectSound
+    .play()
+    .then(() => {
+      window.location.href = "index.html";
+    })
+    .catch((error) => {
+      console.error("Erro ao reproduzir o som:", error);
+    });
+});
+
 setInterval(createObstacle, 1000);
 updatePlayerPosition();
 updateLives();
-
-
