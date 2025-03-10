@@ -2,6 +2,9 @@
 
 Este é um jogo simples onde o jogador deve desviar de obstáculos para avançar de nível. Conforme o jogador progride, a dificuldade aumenta com maior velocidade dos obstáculos e menor intervalo entre suas aparições.
 
+![image](https://github.com/user-attachments/assets/d633e326-e0c8-445c-9206-0352fa643b0a)
+
+
 [Jogar](https://obstacle-game-git-main-gabriellas-projects-bb68f8bb.vercel.app/)
 ## Como Jogar
 
