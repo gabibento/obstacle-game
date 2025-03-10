@@ -15,20 +15,17 @@
   <body>
     <div id="intro">
       <h1>Obstacle Game</h1>
-      <button id="play-button" class="button">Play</button>
+      <div class="button">
+        <button id="play-button">Play</button>
+      </div>
     </div>
     <script>
-      const selectSound = new Audio("./assets/select.mp3");
+      const selectSound = new Audio("./assets/sounds/select.mp3");
       document.getElementById("play-button").addEventListener("click", () => {
-        selectSound
-          .play()
-          .then(() => {
-            window.location.href = "game.html";
-          })
-          .catch((error) => {
-            console.error("Erro ao tentar reproduzir o som:", error);
-            window.location.href = "game.html";
-          });
+        selectSound.play().catch(console.error);
+        setTimeout(() => {
+          window.location.href = "game.html";
+        }, 200);
       });
     </script>
   </body>

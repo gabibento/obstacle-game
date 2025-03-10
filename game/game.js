@@ -226,7 +226,7 @@ let level = 1;
 const levelUp = () => {
   level++;
   levelupSound.play();
-  if (level != 11){
+  if (level != 11) {
     document.querySelector("#level-display").innerText = `Level ${level}`;
     resetUpdate();
   }
@@ -277,30 +277,20 @@ document.querySelector("#retry-button").addEventListener("click", () => {
   resetGame();
 });
 
-document
-  .querySelector("#back-gameover-button")
-  .addEventListener("click", () => {
+document.querySelector("#back-gameover-button").addEventListener("click", () => {
     document.querySelector("#game-over-screen").classList.add("hidden");
-    selectSound
-      .play()
-      .then(() => {
-        window.location.href = "index.html";
-      })
-      .catch((error) => {
-        console.error("Erro ao reproduzir o som:", error);
-      });
+    selectSound.play();
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 200);
   });
 
 document.querySelector("#back-button").addEventListener("click", () => {
   document.querySelector("#game-completed").classList.add("hidden");
-  selectSound
-    .play()
-    .then(() => {
+  selectSound.play();
+    setTimeout(() => {
       window.location.href = "index.html";
-    })
-    .catch((error) => {
-      console.error("Erro ao reproduzir o som:", error);
-    });
+    }, 200);
 });
 
 setInterval(createObstacle, 1000);
