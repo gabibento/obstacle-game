@@ -2,10 +2,11 @@
 
 Este é um jogo simples onde o jogador deve desviar de obstáculos para avançar de nível. Conforme o jogador progride, a dificuldade aumenta com maior velocidade dos obstáculos e menor intervalo entre suas aparições.
 
-![image](https://github.com/user-attachments/assets/d633e326-e0c8-445c-9206-0352fa643b0a)
+### [Jogar aqui](https://obstacle-game-git-main-gabriellas-projects-bb68f8bb.vercel.app/)
+
+![{A08B9202-8049-4EB4-ADC7-12851AC014AB}](https://github.com/user-attachments/assets/2dd3781c-0928-4d40-80c7-8ff8bbefc803)
 
 
-[Jogar](https://obstacle-game-git-main-gabriellas-projects-bb68f8bb.vercel.app/)
 ## Como Jogar
 
 - Use as teclas **W, A, S, D** ou as setas direcionais para mover o jogador.
@@ -13,20 +14,14 @@ Este é um jogo simples onde o jogador deve desviar de obstáculos para avançar
 - O jogo dá Game Over quando todas as vidas são perdidas.
 - O jogo é concluído ao passar do **Nível 10**.
 
-## Recursos
-
+## Funcionalidades
+- Movimentação do jogador
+- Obstáculos aleatórios 
 - Sistema de vidas (**3 vidas iniciais**).
-- Níveis com aumento progressivo da dificuldade com velocidade dos obstáculos.
+- Níveis com aumento progressivo da dificuldade com velocidade e intervalo de criação dos obstáculos.
 - Sons de impacto, game over, progresso de nível e seleção.
 - Reset de jogo e botões de tentar novamente.
 
-- ## Funcionalidades
-
-✅ Movimentação do jogador 
-✅ Obstáculos aleatórios 
-✅ Contagem de vidas 
-✅ Sons de impacto, game over, progresso de nível e seleção.
-✅ Aumento de dificuldade por nível 
 
 ## Tecnologias Utilizadas
 
