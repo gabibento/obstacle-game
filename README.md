@@ -10,7 +10,7 @@ Este é um jogo simples onde o jogador deve desviar de obstáculos para avançar
 ## Como Jogar
 
 - Use as teclas **W, A, S, D** ou as setas direcionais para mover o jogador.
-- O objetivo é evitar os obstáculos e chegar ao **alvo** para avançar de nível.
+- O objetivo é evitar os obstáculos e chegar ao alvo (a porta) para avançar de nível.
 - O jogo dá Game Over quando todas as vidas são perdidas.
 - O jogo é concluído ao passar do **Nível 10**.
 
